@@ -1,3 +1,4 @@
-import pygame;
+from rain_of_letters import *;
 
-pygame.init();
+game = RainOfLetters();
+game.start();
