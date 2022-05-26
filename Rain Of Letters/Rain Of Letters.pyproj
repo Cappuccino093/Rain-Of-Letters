@@ -21,7 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="letter.py" />
+    <Compile Include="falling_letter.py" />
     <Compile Include="main.py" />
     <Compile Include="rain_of_letters.py" />
   </ItemGroup>
