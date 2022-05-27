@@ -1,38 +1,66 @@
+import json
+import pygame;
 import random;
-from pygame import Surface;
+import typing;
+from pygame import Surface, Rect;
 from pygame.font import Font;
+from letter import Letter;
+
+if typing.TYPE_CHECKING:
+	from rain_of_letters import RainOfLetters;
 
 class FallingLetter(object):
-    @classmethod
-    def __init__(self, font, letters, color, min_x, max_x, min_y, max_y):
-        self.__font = font;
-        self.__surface = font.render(random.choice(letters), 1, color);
-        self.__x = random.randint(min_x + self.__font.get_linesize(), max_x - self.__font.get_linesize());
-        self.__y = min_y + self.__font.get_linesize();
-        self.__max_y = max_y;
-        self.__reached_end = False;
+	def __init__(self, rain_of_letters) -> None:
+		self.__rain_of_letters: RainOfLetters = rain_of_letters;
 
-    @classmethod
-    def move(self):
-        y = self.__y + self.__font.get_linesize();
-        
-        if (not(y >= self.__max_y)):
-            self.__y = y;
-        else:
-            self.__reached_end = True;
+		self.__letter: Letter = random.choice(self.__rain_of_letters.letters);
 
-    @property
-    def x(self) -> int:
-        return self.__x;
+		self.__font: Font = self.__rain_of_letters.font;
+		self.__surface: Surface = self.__rain_of_letters.font.render(self.__letter.raw, False, self.__rain_of_letters.primary_color);
 
-    @property
-    def y(self) -> int:
-        return self.__y;
+		area_rect: Rect = self.__rain_of_letters.area_surface.get_rect();
+		font_linesize: int = self.__font.get_linesize();
+		self.__x = random.randint(area_rect.x + font_linesize, area_rect.width - font_linesize);
+		self.__y = area_rect.y + font_linesize;
+		self.__maximum_y = area_rect.height - font_linesize;
 
-    @property
-    def surface(self) -> Surface:
-        return self.__surface;
+		self.__reached_end = False;
+		self.__pressed = False;
 
-    @property
-    def reached_end(self) -> int:
-        return self.__reached_end;
+	@property
+	def letter(self) -> Letter:
+		return self.__letter;
+
+	@property
+	def x(self) -> int:
+		return self.__x;
+
+	@property
+	def y(self) -> int:
+		return self.__y;
+
+	@property
+	def surface(self) -> Surface:
+		return self.__surface;
+
+	@property
+	def reached_end(self) -> bool:
+		return self.__reached_end;
+
+	@property
+	def pressed(self) -> bool:
+		return self.__pressed;
+	
+	def move(self):
+		y = self.__y + self.__font.get_linesize();
+		
+		if (not(y >= self.__maximum_y)):
+			self.__y = y;
+		else:
+			self.__reached_end = True;
+
+	def press(self):
+		if (not self.__reached_end):
+			self.__pressed = True;
+
+

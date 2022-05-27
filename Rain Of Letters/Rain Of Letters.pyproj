@@ -22,6 +22,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="falling_letter.py" />
+    <Compile Include="letter.py" />
+    <Compile Include="letters.py" />
     <Compile Include="main.py" />
     <Compile Include="rain_of_letters.py" />
   </ItemGroup>
